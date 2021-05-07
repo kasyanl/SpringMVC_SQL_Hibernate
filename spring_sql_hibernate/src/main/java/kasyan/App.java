@@ -8,7 +8,7 @@ import java.util.List;
 public class App {
     public static void main(String[] args) {
         GetProductService getProductService = new GetProductService();
-        List<Product> products = getProductService.findAllDeleted();
+        List<Product> products = getProductService.fineCategoryForRead("BERRIES");
         for(Product product : products){
             System.out.println(product);
         }

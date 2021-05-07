@@ -1,8 +1,11 @@
 package kasyan.service;
 
+import kasyan.bean.BuyProduct;
 import kasyan.bean.Product;
 import kasyan.exceptions.ProductNotFoundException;
 import kasyan.repository.RepositoryService;
+import kasyan.util.HibernateSessionFactory;
+import org.hibernate.Session;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -19,9 +22,13 @@ public class UpdateProductService extends RepositoryService {
     // отправляем запрос в БД на обновление Product по ID
     public void update(int id, String category, String name, double price, double discount, double totalVolume) throws SQLException {
         double actualPrice = calculating(price, discount);
-        String select = "UPDATE product SET category='" + category + "', name='" + name + "', price=" + price +
-                ", discount=" + discount + ", actualPrice=" + actualPrice + ", totalVolume=" + totalVolume + ", data=NOW() WHERE id=" + id;
-        selectBD(select);
+        Session session = HibernateSessionFactory.getSessionFactory().openSession();
+        session.createSQLQuery("UPDATE product SET category='" + category + "', name='" + name + "', price=" + price +
+                        ", discount=" + discount + ", actualPrice=" + actualPrice + ", totalVolume=" + totalVolume + ", data=NOW() WHERE id=" + id).executeUpdate();
+//        String select = "UPDATE product SET category='" + category + "', name='" + name + "', price=" + price +
+//                ", discount=" + discount + ", actualPrice=" + actualPrice + ", totalVolume=" + totalVolume + ", data=NOW() WHERE id=" + id;
+//        selectBD(select);
+        session.close();
     }
 
     // установка скидки для одной категории
@@ -33,20 +40,26 @@ public class UpdateProductService extends RepositoryService {
     }
 
     // выбор продукта для покупки (передаем количество или вес продукта), добавляем в отдельную БД
-    public void bayProduct(int id, double quantity) throws SQLException, ProductNotFoundException {
+    public void bayProduct(int id, double quantity) throws ProductNotFoundException {
         Product product = getProductService.findById(id);
         double totalPrice = product.getActualPrice() * quantity;
-
-        selectBD("INSERT buyproduct (id, name, actualPrice, quantity, totalPrice) VALUES (" + product.getId() + ", '" + product.getName() +
+        Session session = HibernateSessionFactory.getSessionFactory().openSession();
+        session.createSQLQuery("INSERT buyproduct (id, name, actualPrice, quantity, totalPrice) VALUES (" + product.getId() + ", '" + product.getName() +
                 "', " + product.getActualPrice() + ", " + quantity + ", " + totalPrice + ")");
+//        selectBD("INSERT buyproduct (id, name, actualPrice, quantity, totalPrice) VALUES (" + product.getId() + ", '" + product.getName() +
+//                "', " + product.getActualPrice() + ", " + quantity + ", " + totalPrice + ")");
+        session.close();
     }
 
     // сохранение данных после изменения
     public void endTransaction() throws SQLException {
-        List<Product> newList = getProductService.findAllBuyProduct();
-        for (Product product : newList) {
-            selectBD("UPDATE product SET totalVolume=totalVolume-" + product.getQuantity() + ", data=NOW() WHERE id=" + product.getId());
+        List<BuyProduct> newList = getProductService.findAllBuyProduct();
+        Session session = HibernateSessionFactory.getSessionFactory().openSession();
+        for (BuyProduct product : newList) {
+            session.createSQLQuery("UPDATE product SET totalVolume=totalVolume-" + product.getQuantity() + ", data=NOW() WHERE id=" + product.getId());
+//            selectBD("UPDATE product SET totalVolume=totalVolume-" + product.getQuantity() + ", data=NOW() WHERE id=" + product.getId());
         }
+        session.close();
     }
 
     @Autowired

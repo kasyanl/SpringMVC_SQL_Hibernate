@@ -48,10 +48,10 @@ public class IndexController {
 
     // экспорт данных из корзины в excel
     @GetMapping(value = "/exportexceldel")
-    public ModelAndView exportExcelDel() throws SQLException {
+    public ModelAndView exportExcelDel(){
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName("adminpages/exportexceldel");
-        modelAndView.addObject("product", ExportToExcelService.exportAllList(getProductService.findAllDeleted()));
+        modelAndView.addObject("product", ExportToExcelService.exportListOfBasket(getProductService.findAllDeleted()));
         return modelAndView;
     }
 

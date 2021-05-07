@@ -38,45 +38,45 @@
 <br>
 <table class="table" align="center">
     <tr>
-        <th width="100" align="center"><b> ID</b></th>
-        <th><b> категория</b></th>
-        <th><b> название</b></th>
-        <th width="100" align="center"><b> цена, BYN</b></th>
-        <th width="100" align="center"><b> скидка, %</b></th>
-        <th width="100" align="center"><b> конечная цена, BYN</b></th>
-        <th width="100" align="center"><b> наличие, кг(шт)</b></th>
-        <th></th>
-        <th></th>
+        <th colspan="2" width="100" align="center"><b> ID</b></th>
+        <th colspan="2" align="center"><b> категория</b></th>
+        <th colspan="2" align="center"><b> название</b></th>
+        <th colspan="2" width="100" align="center"><b> цена, BYN</b></th>
+        <th colspan="2" width="100" align="center"><b> скидка, %</b></th>
+        <th colspan="2" width="100" align="center"><b> конечная цена, BYN</b></th>
+        <th colspan="2" width="100" align="center"><b> наличие, кг(шт)</b></th>
+        <td></td>
+        <td></td>
     </tr>
-    <c:forEach var="product" items="${product}">
+    <c:forEach var="product" items="${productBERRIES}">
         <tr>
-            <td><c:out value="${product.getId()}"/></td>
-            <td><c:out value="${product.getCategory()}"/></td>
-            <td><c:out value="${product.getName()}"/></td>
-            <td><c:out value="${product.getPrice()}"/></td>
-            <td><c:out value="${product.getDiscount()}"/></td>
-            <td><c:out value="${product.getActualPrice()}"/></td>
-            <td><c:out value="${product.getTotalVolume()}"/></td>
+            <td colspan="2" align="center"><c:out value="${product.id}"/></td>
+            <td colspan="2" align="center"><c:out value="${product.getCategory()}"/></td>
+            <td colspan="2" align="center"><c:out value="${product.getName()}"/></td>
+            <td colspan="2" align="center"><c:out value="${product.getPrice()}"/></td>
+            <td colspan="2" align="center"><c:out value="${product.getDiscount()}"/></td>
+            <td colspan="2" align="center"><c:out value="${product.getActualPrice()}"/></td>
+            <td colspan="2" align="center"><c:out value="${product.getTotalVolume()}"/></td>
             <td><a href="${pageContext.request.contextPath}/product/deleteproduct?id=${product.getId()}" title="Удалить"
                    onclick="return confirm('Удалить продукт <${product.getName()}> категории <${product.getCategory()}>?')"><input
                     type="image" src="${pageContext.request.contextPath}/download/xls/del.png"
-                    width="18" height="18" alt="Удалить"></a></td>
+                    width="18" height="18" alt="Очистить корзину"></a></td>
             <td><a href="${pageContext.request.contextPath}/product/editproduct?id=${product.getId()}" title="Изменить"
                    onclick="return confirm('Изменить данные <${product.getName()}> категории <${product.getCategory()}>?')"><input
                     type="image" src="${pageContext.request.contextPath}/download/xls/edit.jpg"
-                    width="18" height="18" alt="Изменить"></a></td>
+                    width="18" height="18" alt="Очистить корзину"></a></td>
         </tr>
     </c:forEach>
     <tr>
-        <th><b> ID</b></th>
-        <th><b> категория</b></th>
-        <th><b> название</b></th>
-        <th><b> цена, BYN</b></th>
-        <th><b> скидка, %</b></th>
-        <th><b> конечная цена, BYN</b></th>
-        <th><b> наличие, кг(шт)</b></th>
-        <th></th>
-        <th></th>
+        <th colspan="2" width="100" align="center"><b> ID</b></th>
+        <th colspan="2" align="center"><b> категория</b></th>
+        <th colspan="2" align="center"><b> название</b></th>
+        <th colspan="2" width="100" align="center"><b> цена, BYN</b></th>
+        <th colspan="2" width="100" align="center"><b> скидка, %</b></th>
+        <th colspan="2" width="100" align="center"><b> конечная цена, BYN</b></th>
+        <th colspan="2" width="100" align="center"><b> наличие, кг(шт)</b></th>
+        <td></td>
+        <td></td>
     </tr>
 </table>
 <a href="${pageContext.request.contextPath}/selectcategorybyread">Back</a>

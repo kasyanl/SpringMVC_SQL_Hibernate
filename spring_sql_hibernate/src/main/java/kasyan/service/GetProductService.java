@@ -4,17 +4,14 @@ import kasyan.bean.BuyProduct;
 import kasyan.bean.Product;
 import kasyan.bean.ProductOfDelete;
 import kasyan.exceptions.ProductNotFoundException;
-import kasyan.repository.RepositoryService;
 import kasyan.util.HibernateSessionFactory;
 import org.hibernate.Session;
 import org.springframework.stereotype.Service;
 
-import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.List;
 
 @Service
-public class GetProductService extends RepositoryService {
+public class GetProductService{
 
     //отправка запроса на получение всех продуктов из основной БД
     public List<Product> findAll() {
@@ -56,24 +53,19 @@ public class GetProductService extends RepositoryService {
     }
 
     // ищем все Products одной категории и отправляем в БД соответствующий запрос
-    public List<Product> fineCategoryForRead(String category) throws SQLException {
-        List<Product> listProduct = findAll();
-        List<Product> newListForRead = new ArrayList<>();
-        for (Product product : listProduct) {
-            if (product.getCategory().equals(category)) {
-                newListForRead.add(product);
-            }
-        }
-        String select = "SELECT id, category, name, price, discount, actualPrice, totalVolume, data  FROM product WHERE category='" + category + "'";
-        findProductFromBD(select);
-        return newListForRead;
+    public List<Product> fineCategoryForRead(String category){
+        Session session = HibernateSessionFactory.getSessionFactory().openSession();
+        List<Product> product = session.createSQLQuery("SELECT id, category, name, price, discount, " +
+                "actualPrice, totalVolume, data  FROM Product WHERE category='" + category + "'").getResultList();
+        session.close();
+        return product;
     }
 
     // расчет общей суммы покупок
-    public double totalPrise() throws SQLException {
-        List<Product> newList = findAllBuyProduct();
+    public double totalPrise(){
+        List<BuyProduct> newList = findAllBuyProduct();
         double count = 0;
-        for (Product product : newList) {
+        for (BuyProduct product : newList) {
             count += product.getTotalPrice();
         }
         return count;
@@ -85,8 +77,8 @@ public class GetProductService extends RepositoryService {
     }
 
     // проверка, пуста ли корзина
-    public boolean basketIsEmpty() throws SQLException {
-        List<Product> newList = findAllDeleted();
+    public boolean basketIsEmpty(){
+        List<ProductOfDelete> newList = findAllDeleted();
         return newList.isEmpty();
     }
 }

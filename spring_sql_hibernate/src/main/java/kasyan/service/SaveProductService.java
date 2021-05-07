@@ -2,6 +2,8 @@ package kasyan.service;
 
 import kasyan.bean.Product;
 import kasyan.repository.RepositoryService;
+import kasyan.util.HibernateSessionFactory;
+import org.hibernate.Session;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -9,7 +11,7 @@ import java.sql.SQLException;
 import java.util.List;
 
 @Service
-public class SaveProductService extends RepositoryService {
+public class SaveProductService{
 
     private GetProductService getProductService;
 
@@ -19,9 +21,13 @@ public class SaveProductService extends RepositoryService {
         List<Product> newList = getProductService.findAll();
         int id = createId(newList);
         double actualPrice = calculating(price, discount);
-        String select = "INSERT product (id, category, name, price, discount, actualPrice, totalVolume, data) VALUES (" + id +
-                " ,'" + category + "' ,'" + name + "' ," + price + " ," + discount + " ," + actualPrice + " ," + totalVolume + ", NOW())";
-        selectBD(select);
+        Session session = HibernateSessionFactory.getSessionFactory().openSession();
+        session.createSQLQuery("INSERT product (id, category, name, price, discount, actualPrice, totalVolume, data) VALUES (" + id +
+                        " ,'" + category + "' ,'" + name + "' ," + price + " ," + discount + " ," + actualPrice + " ," + totalVolume + ", NOW())").executeUpdate();
+//        String select = "INSERT product (id, category, name, price, discount, actualPrice, totalVolume, data) VALUES (" + id +
+//                " ,'" + category + "' ,'" + name + "' ," + price + " ," + discount + " ," + actualPrice + " ," + totalVolume + ", NOW())";
+//        selectBD(select);
+        session.close();
     }
 
     // метод для расчета стоимости с учетом скидки

@@ -80,10 +80,10 @@ public class SearchCategoryController {
 
     // получение списка категории BERRIES для Гостя
     @GetMapping(value = "/fineberriesguest")
-    public ModelAndView fineBerriesGuest() throws SQLException {
+    public ModelAndView fineBerriesGuest(){
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName("guestpages/finecategory/fineberriesguest");
-        modelAndView.addObject("product", getProductService.fineCategoryForRead("BERRIES"));
+        modelAndView.addObject("productBERRIES", getProductService.fineCategoryForRead("BERRIES"));
         return modelAndView;
     }
 

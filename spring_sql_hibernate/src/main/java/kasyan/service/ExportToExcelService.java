@@ -1,6 +1,8 @@
 package kasyan.service;
 
+import kasyan.bean.BuyProduct;
 import kasyan.bean.Product;
+import kasyan.bean.ProductOfDelete;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
@@ -25,7 +27,7 @@ public class ExportToExcelService {
     }
 
     // сервис на экспорт списка продуктов одной категории в excel
-    public List<Product> exportCategoryList(String category) throws SQLException {
+    public List<Product> exportCategoryList(String category){
         return exportList(getProductService.fineCategoryForRead(category));
     }
 
@@ -101,9 +103,81 @@ public class ExportToExcelService {
         }
         return listProduct;
     }
+    // формирование таблицы excel и добавление данных из List
+    public static List<ProductOfDelete> exportListOfBasket(List<ProductOfDelete> listProductDelete) {
+        HSSFWorkbook workbook = new HSSFWorkbook();
+        Sheet sheet = workbook.createSheet("List products"); //название вкладки
+        sheet.setColumnWidth(0, 1500); // ширина строк
+        sheet.setColumnWidth(1,6000);
+        sheet.setColumnWidth(2,6000);
+        sheet.setColumnWidth(3,3000);
+        sheet.setColumnWidth(4,3000);
+        sheet.setColumnWidth(5,3000);
+        sheet.setColumnWidth(6,3000);
+        // даем название колонок таблицы
+        Row row = sheet.createRow(0); // первая строка
+
+        Cell idTop = row.createCell(0);
+        idTop.setCellValue("id"); // название первого столбца
+
+        Cell categoryTop = row.createCell(1);
+        categoryTop.setCellValue("Category");// название второго столбца
+
+        Cell nameTop = row.createCell(2);
+        nameTop.setCellValue("Name");// название третьего столбца
+
+        Cell priceTop = row.createCell(3);
+        priceTop.setCellValue("Price, BYN");// название четвертого столбца
+
+        Cell discountTop = row.createCell(4);
+        discountTop.setCellValue("Discount, %");// название пятого столбца
+
+        Cell totalVolumeTop = row.createCell(5);
+        totalVolumeTop.setCellValue("Count, kg()");// название шестого столбца
+
+        Cell actualPriceTop = row.createCell(6);
+        actualPriceTop.setCellValue("Total, BYN");// название седьмого столбца
+
+        // добавляем данные из List
+        int i = 1;
+        for (ProductOfDelete product : listProductDelete) {
+            Row rowProduct = sheet.createRow(i);
+            Cell id = rowProduct.createCell(0);
+            id.setCellValue(product.getId());
+
+            Cell category = rowProduct.createCell(1);
+            category.setCellValue(product.getCategory());
+
+            Cell name = rowProduct.createCell(2);
+            name.setCellValue(product.getName());
+
+            Cell price = rowProduct.createCell(3);
+            price.setCellValue(product.getPrice());
+
+            Cell discount = rowProduct.createCell(4);
+            discount.setCellValue(product.getDiscount());
+
+            Cell totalVolume = rowProduct.createCell(5);
+            totalVolume.setCellValue(product.getTotalVolume());
+
+            Cell actualPrice = rowProduct.createCell(6);
+            actualPrice.setCellValue(product.getActualPrice());
+
+            i++;
+        }
+        // название и путь для нашего файла
+        String filename = "src/main/webapp/WEB-INF/downloads/xls/productlist.xls";
+
+        try (FileOutputStream out = new FileOutputStream(filename)) {
+            workbook.write(out);
+        } catch (IOException file) {
+            file.printStackTrace();
+        }
+        return listProductDelete;
+    }
 
     // формирование таблицы excel из списка покупок
-    public void check(List<Product> listProduct) throws SQLException {
+    public void check(List<BuyProduct> listProduct){
         HSSFWorkbook workbook = new HSSFWorkbook();
         Sheet sheet = workbook.createSheet("check"); //название вкладки
         sheet.setColumnWidth(0, 2000); // ширина строк
@@ -132,7 +206,7 @@ public class ExportToExcelService {
 
         // добавляем данные из List
         int i = 1;
-        for (Product product : listProduct) {
+        for (BuyProduct product : listProduct) {
             Row rowProduct = sheet.createRow(i);
             Cell id = rowProduct.createCell(0);
             id.setCellValue(i);
