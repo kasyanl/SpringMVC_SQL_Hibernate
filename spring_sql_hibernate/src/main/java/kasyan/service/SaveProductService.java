@@ -1,13 +1,11 @@
 package kasyan.service;
 
 import kasyan.bean.Product;
-import kasyan.repository.RepositoryService;
 import kasyan.util.HibernateSessionFactory;
 import org.hibernate.Session;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.sql.SQLException;
 import java.util.List;
 
 @Service
@@ -17,12 +15,12 @@ public class SaveProductService{
 
     /* отправка запроса на добавление новой записи в БД Product
    и автоматическим расчетом цены с учетом скидки */
-    public void save(String category, String name, double price, double discount, double totalVolume) throws SQLException {
+    public void save(String category, String name, double price, double discount, double totalVolume){
         List<Product> newList = getProductService.findAll();
         int id = createId(newList);
         double actualPrice = calculating(price, discount);
         Session session = HibernateSessionFactory.getSessionFactory().openSession();
-        session.createSQLQuery("INSERT product (id, category, name, price, discount, actualPrice, totalVolume, data) VALUES (" + id +
+        session.createSQLQuery("INSERT INTO Product (id, category, name, price, discount, actualPrice, totalVolume, data) VALUES (" + id +
                         " ,'" + category + "' ,'" + name + "' ," + price + " ," + discount + " ," + actualPrice + " ," + totalVolume + ", NOW())").executeUpdate();
 //        String select = "INSERT product (id, category, name, price, discount, actualPrice, totalVolume, data) VALUES (" + id +
 //                " ,'" + category + "' ,'" + name + "' ," + price + " ," + discount + " ," + actualPrice + " ," + totalVolume + ", NOW())";

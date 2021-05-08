@@ -34,13 +34,13 @@
     <%@include file="sortelementguest.jsp" %>
     <c:forEach var="product" items="${product}">
         <tr>
-            <td colspan="2" align="center"><c:out value="${product.getId()}"/></td>
-            <td colspan="2" align="center"><c:out value="${product.getCategory()}"/></td>
-            <td colspan="2" align="center"><c:out value="${product.getName()}"/></td>
-            <td colspan="2" align="center"><c:out value="${product.getPrice()}"/></td>
-            <td colspan="2" align="center"><c:out value="${product.getDiscount()}"/></td>
-            <td colspan="2" align="center"><c:out value="${product.getActualPrice()}"/></td>
-            <td colspan="2" align="center"><c:out value="${product.getTotalVolume()}"/></td>
+            <td colspan="2" align="center"><c:out value="${product.id}"/></td>
+            <td colspan="2" align="center"><c:out value="${product.category}"/></td>
+            <td colspan="2" align="center"><c:out value="${product.name}"/></td>
+            <td colspan="2" align="center"><c:out value="${product.price}"/></td>
+            <td colspan="2" align="center"><c:out value="${product.discount}"/></td>
+            <td colspan="2" align="center"><c:out value="${product.actualPrice}"/></td>
+            <td colspan="2" align="center"><c:out value="${product.totalVolume}"/></td>
         </tr>
     </c:forEach>
     <tr>

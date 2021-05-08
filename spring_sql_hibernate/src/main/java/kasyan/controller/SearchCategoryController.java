@@ -71,7 +71,7 @@ public class SearchCategoryController {
 
     // получение списка категории FRUITS для Гостя
     @GetMapping(value = "/finefruitsguest")
-    public ModelAndView fineFruitsGuest() throws SQLException {
+    public ModelAndView fineFruitsGuest(){
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName("guestpages/finecategory/finefruitsguest");
         modelAndView.addObject("product", getProductService.fineCategoryForRead("FRUITS"));

@@ -3,7 +3,6 @@ package kasyan.service;
 import kasyan.bean.BuyProduct;
 import kasyan.bean.Product;
 import kasyan.exceptions.ProductNotFoundException;
-import kasyan.repository.RepositoryService;
 import kasyan.util.HibernateSessionFactory;
 import org.hibernate.Session;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,7 +14,7 @@ import java.util.List;
 import static kasyan.service.SaveProductService.calculating;
 
 @Service
-public class UpdateProductService extends RepositoryService {
+public class UpdateProductService{
 
     private GetProductService getProductService;
 

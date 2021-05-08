@@ -3,7 +3,6 @@ package kasyan.service;
 import kasyan.bean.BuyProduct;
 import kasyan.bean.Product;
 import kasyan.bean.ProductOfDelete;
-import kasyan.repository.RepositoryService;
 import kasyan.util.HibernateSessionFactory;
 import org.hibernate.Session;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,7 +26,7 @@ public class DeleteProductService{
         for (Product product : newList) {
             if (product.getId() == id) {
                 session.createQuery("DELETE Product WHERE id= :id").setParameter("id", product.getId()).executeUpdate();
-                session.createSQLQuery("INSERT roductofdelete (id, category, name, price, discount, actualPrice, totalVolume, data) VALUES (" + id +
+                session.createQuery("INSERT ProductOfDdelete (id, category, name, price, discount, actualPrice, totalVolume, data) VALUES (" + id +
                         " ,'" + product.getCategory() + "', '" + product.getName() + "', " + product.getPrice() + ", " +
                         product.getDiscount() + ", " + product.getActualPrice() + ", " + product.getTotalVolume() + ", NOW())").executeUpdate();
                 break;

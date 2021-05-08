@@ -37,7 +37,7 @@
     <c:forEach var="product" items="${product}">
         <tr>
             <td colspan="2" align="center"><c:out value="${product.id}"/></td>
-            <td colspan="2" align="center"><c:out value="${product.getCategory()}"/></td>
+            <td colspan="2" align="center"><c:out value="${product.category}"/></td>
             <td colspan="2" align="center"><c:out value="${product.getName()}"/></td>
             <td colspan="2" align="center"><c:out value="${product.getPrice()}"/></td>
             <td colspan="2" align="center"><c:out value="${product.getDiscount()}"/></td>
