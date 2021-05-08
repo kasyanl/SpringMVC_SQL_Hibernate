@@ -1,97 +1,86 @@
 package kasyan.service;
 
 import kasyan.bean.BuyProduct;
-import kasyan.bean.Product;
 import kasyan.bean.ProductOfDelete;
+import kasyan.exceptions.ProductNotFoundException;
 import kasyan.util.HibernateSessionFactory;
 import org.hibernate.Session;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.sql.SQLException;
 import java.util.List;
 
 @Service
-public class DeleteProductService{
+public class DeleteProductService {
 
     private GetProductService getProductService;
+    private SaveProductService saveProductService;
 
     //находим Product по его ID и отправка запроса в БД для удаления и одновременно добавления в "корзину" (и добавляем дату удаления)
-    public void delete(int id) throws SQLException {
+    public void deleteProduct(int id) throws ProductNotFoundException {
 
-        List<Product> newList = getProductService.findAll();
-//        String select = "";
-//        String deleteProduct = "";
         Session session = HibernateSessionFactory.getSessionFactory().openSession();
-        for (Product product : newList) {
-            if (product.getId() == id) {
-                session.createQuery("DELETE Product WHERE id= :id").setParameter("id", product.getId()).executeUpdate();
-                session.createQuery("INSERT ProductOfDdelete (id, category, name, price, discount, actualPrice, totalVolume, data) VALUES (" + id +
-                        " ,'" + product.getCategory() + "', '" + product.getName() + "', " + product.getPrice() + ", " +
-                        product.getDiscount() + ", " + product.getActualPrice() + ", " + product.getTotalVolume() + ", NOW())").executeUpdate();
-                break;
-//                select = "DELETE FROM product WHERE id=" + id;
-//                deleteProduct = "INSERT productofdelete (id, category, name, price, discount, actualPrice, totalVolume, data) VALUES (" + id +
-//                        " ,'" + product.getCategory() + "', '" + product.getName() + "', " + product.getPrice() + ", " +
-//                        product.getDiscount() + ", " + product.getActualPrice() + ", " + product.getTotalVolume() + ", NOW())";
-//                break;
-            }
-        }
-//        selectBD(select); // отправка запроса на удаление из основной БД
-//        selectBD(deleteProduct); // отправка запроса на добавление в корзину
+
+        saveProductService.saveProductOfDelete(id);
+        session.beginTransaction();
+        session.createQuery("DELETE Product WHERE id= :id").setParameter("id", id).executeUpdate();
+        session.getTransaction().commit();
         session.close();
     }
 
     //находим Product по его ID с писке покупок и отправляем запрос на его даление
-    public void deleteBuy(int id){
+    public void deleteBuy(int id) {
         List<BuyProduct> newList = getProductService.findAllBuyProduct();
-//        String select = "";
         Session session = HibernateSessionFactory.getSessionFactory().openSession();
         for (BuyProduct product : newList) {
             if (product.getId() == id) {
-                session.createQuery("DELETE BuyProduct WHERE id= :id").setParameter("id", product.getId()).executeUpdate();
-//                select = "DELETE FROM buyproduct WHERE id=" + id;
+                session.createQuery("DELETE BuyProduct WHERE id= :id")
+                        .setParameter("id", product.getId()).executeUpdate();
                 break;
             }
         }
-//        selectBD(select); // отправка запроса на удаление из основной БД
         session.close();
     }
 
     //находим Product по его ID  в корзине и отправка запроса для удаления
-    public void deleteOfBasket(int id){
+    public void deleteOfBasket(int id) {
         List<ProductOfDelete> newList = getProductService.findAllDeleted();
-//        String select = "";
         Session session = HibernateSessionFactory.getSessionFactory().openSession();
         for (ProductOfDelete product : newList) {
             if (product.getId() == id) {
-                session.createQuery("DELETE ProductOfDelete WHERE id= :id").setParameter("id", product.getId()).executeUpdate();
-//                select = "DELETE FROM productofdelete WHERE id=" + id;
+                session.createQuery("DELETE ProductOfDelete WHERE id= :id")
+                        .setParameter("id", product.getId()).executeUpdate();
                 break;
             }
         }
-//        selectBD(select); // отправка запроса на удаление из основной БД
         session.close();
     }
 
     //очистка всех данных из корзины
-    public void cleanBasket(){
+    public void cleanBasket() {
         Session session = HibernateSessionFactory.getSessionFactory().openSession();
-        session.createSQLQuery("TRUNCATE table productofdelete").executeUpdate();
-//        selectBD("TRUNCATE TABLE productofdelete");
+        session.beginTransaction();
+        session.createQuery("DELETE FROM ProductOfDelete").executeUpdate();
+        session.getTransaction().commit();
         session.close();
     }
 
     // очистка БД с покупками
-    public void cleanBuyDB(){
+    public void cleanBuyDB() {
         Session session = HibernateSessionFactory.getSessionFactory().openSession();
-        session.createSQLQuery("TRUNCATE table buyproduct").executeUpdate();
-//        selectBD("TRUNCATE TABLE buyproduct");
+        session.beginTransaction();
+        session.createQuery("DELETE FROM BuyProduct").executeUpdate();
+        session.getTransaction().commit();
         session.close();
     }
 
     @Autowired
     public void setGetProductService(GetProductService getProductService) {
         this.getProductService = getProductService;
+    }
+
+    @Autowired
+    public void setSaveProductService(SaveProductService saveProductService) {
+        this.saveProductService = saveProductService;
     }
 }

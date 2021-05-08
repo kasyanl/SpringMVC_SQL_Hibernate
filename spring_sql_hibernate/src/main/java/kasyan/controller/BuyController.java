@@ -1,10 +1,7 @@
 package kasyan.controller;
 
 import kasyan.exceptions.ProductNotFoundException;
-import kasyan.service.DeleteProductService;
-import kasyan.service.ExportToExcelService;
-import kasyan.service.GetProductService;
-import kasyan.service.UpdateProductService;
+import kasyan.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -23,6 +20,7 @@ public class BuyController {
     private ExportToExcelService exportToExcelService;
     private GetProductService getProductService;
     private UpdateProductService updateProductService;
+    private SaveProductService saveProductService;
 
     // получение страницы с формой для добавления продукта
     @GetMapping(value = "/buystarted")
@@ -47,7 +45,7 @@ public class BuyController {
                                        @RequestParam(value = "quantity") double quantity,
                                        @RequestParam(value = "totalVolume") double totalVolume) throws SQLException, ProductNotFoundException {
         if (getProductService.checkingForNumber(quantity, totalVolume)) {
-            updateProductService.bayProduct(id, quantity);
+            saveProductService.saveBayProduct(id, quantity);
             return new ModelAndView("redirect:/product/buyproduct");
         }
         return new ModelAndView("redirect:/product/buyproduct");
@@ -64,7 +62,7 @@ public class BuyController {
 
     // получение страницы с формой для добавления продукта
     @GetMapping(value = "/checkend")
-    public ModelAndView checkend() throws SQLException {
+    public ModelAndView checkend() throws ProductNotFoundException {
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName("adminpages/checkend");
         exportToExcelService.check(getProductService.findAllBuyProduct());
@@ -105,5 +103,10 @@ public class BuyController {
     @Autowired
     public void setUpdateProductService(UpdateProductService updateProductService) {
         this.updateProductService = updateProductService;
+    }
+
+    @Autowired
+    public void setSaveProductService(SaveProductService saveProductService) {
+        this.saveProductService = saveProductService;
     }
 }

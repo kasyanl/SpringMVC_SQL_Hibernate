@@ -4,60 +4,66 @@ import kasyan.bean.BuyProduct;
 import kasyan.bean.Product;
 import kasyan.exceptions.ProductNotFoundException;
 import kasyan.util.HibernateSessionFactory;
+
 import org.hibernate.Session;
+import org.hibernate.query.Query;
 import org.springframework.beans.factory.annotation.Autowired;
+
 import org.springframework.stereotype.Service;
 
-import java.sql.SQLException;
 import java.util.List;
 
 import static kasyan.service.SaveProductService.calculating;
 
 @Service
-public class UpdateProductService{
+public class UpdateProductService {
 
     private GetProductService getProductService;
 
     // отправляем запрос в БД на обновление Product по ID
-    public void update(int id, String category, String name, double price, double discount, double totalVolume) throws SQLException {
+    public void update(int id, String category, String name, double price, double discount, double totalVolume) {
         double actualPrice = calculating(price, discount);
         Session session = HibernateSessionFactory.getSessionFactory().openSession();
-        session.createSQLQuery("UPDATE product SET category='" + category + "', name='" + name + "', price=" + price +
-                        ", discount=" + discount + ", actualPrice=" + actualPrice + ", totalVolume=" + totalVolume + ", data=NOW() WHERE id=" + id).executeUpdate();
-//        String select = "UPDATE product SET category='" + category + "', name='" + name + "', price=" + price +
-//                ", discount=" + discount + ", actualPrice=" + actualPrice + ", totalVolume=" + totalVolume + ", data=NOW() WHERE id=" + id;
-//        selectBD(select);
+        session.beginTransaction();
+        session.createQuery("UPDATE Product SET category= :category, name=:name, price=:price," +
+                " discount=:discount, actualPrice=:actualPrice, totalVolume=:totalVolume WHERE id=:id")
+                .setParameter("category", category)
+                .setParameter("name", name)
+                .setParameter("price", price)
+                .setParameter("discount", discount)
+                .setParameter("actualPrice", actualPrice)
+                .setParameter("totalVolume", totalVolume)
+                .setParameter("id", id)
+                .executeUpdate();
+        session.getTransaction().commit();
         session.close();
     }
 
     // установка скидки для одной категории
-    public void updateDiscountForCategory(String category, double discount) throws SQLException {
+    public void updateDiscountForCategory(String category, double discount) {
+
         List<Product> listCategory = getProductService.fineCategoryForRead(category);
         for (Product product : listCategory) {
             update(product.getId(), category, product.getName(), product.getPrice(), discount, product.getTotalVolume());
         }
     }
 
-    // выбор продукта для покупки (передаем количество или вес продукта), добавляем в отдельную БД
-    public void bayProduct(int id, double quantity) throws ProductNotFoundException {
-        Product product = getProductService.findById(id);
-        double totalPrice = product.getActualPrice() * quantity;
-        Session session = HibernateSessionFactory.getSessionFactory().openSession();
-        session.createSQLQuery("INSERT buyproduct (id, name, actualPrice, quantity, totalPrice) VALUES (" + product.getId() + ", '" + product.getName() +
-                "', " + product.getActualPrice() + ", " + quantity + ", " + totalPrice + ")");
-//        selectBD("INSERT buyproduct (id, name, actualPrice, quantity, totalPrice) VALUES (" + product.getId() + ", '" + product.getName() +
-//                "', " + product.getActualPrice() + ", " + quantity + ", " + totalPrice + ")");
-        session.close();
-    }
-
     // сохранение данных после изменения
-    public void endTransaction() throws SQLException {
-        List<BuyProduct> newList = getProductService.findAllBuyProduct();
+    public void endTransaction() throws ProductNotFoundException {
+        List<BuyProduct> newListBuy = getProductService.findAllBuyProduct();
+//        List<Product> newListProduct = getProductService.findAll();
+
         Session session = HibernateSessionFactory.getSessionFactory().openSession();
-        for (BuyProduct product : newList) {
-            session.createSQLQuery("UPDATE product SET totalVolume=totalVolume-" + product.getQuantity() + ", data=NOW() WHERE id=" + product.getId());
-//            selectBD("UPDATE product SET totalVolume=totalVolume-" + product.getQuantity() + ", data=NOW() WHERE id=" + product.getId());
+        session.beginTransaction();
+        for (BuyProduct buyProduct : newListBuy) {
+            Product product = getProductService.findById(buyProduct.getId());
+            double totalVolume = product.getTotalVolume() - buyProduct.getQuantity();
+            session.createQuery("UPDATE Product SET totalVolume=:totalVolume WHERE id=:id")
+                    .setParameter("totalVolume", totalVolume)
+                    .setParameter("id", buyProduct.getId())
+                    .executeUpdate();
         }
+        session.getTransaction().commit();
         session.close();
     }
 

@@ -55,7 +55,7 @@ public class ProductCrudOperationController {
                             @RequestParam(value = "price") double price,
                             @RequestParam(value = "discount") double discount,
                             @RequestParam(value = "totalVolume") double totalVolume) throws SQLException {
-        saveProductService.save(category, name, price, discount, totalVolume);
+        saveProductService.saveProduct(category, name, price, discount, totalVolume);
         return new ModelAndView("redirect:/product/allproduct");
     }
 
@@ -84,8 +84,8 @@ public class ProductCrudOperationController {
 
     // получение страницы с сообщением, что продукт удален из основной БД
     @GetMapping(value = "/deleteproduct")
-    public ModelAndView deleteproduct(@RequestParam(value = "id") int id) throws SQLException {
-        deleteProductService.delete(id);
+    public ModelAndView deleteproduct(@RequestParam(value = "id") int id) throws SQLException, ProductNotFoundException {
+        deleteProductService.deleteProduct(id);
         return new ModelAndView("adminpages/deleteproduct");
     }
 

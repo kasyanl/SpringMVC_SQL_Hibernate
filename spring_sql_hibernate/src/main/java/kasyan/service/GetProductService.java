@@ -28,8 +28,6 @@ public class GetProductService{
         List<ProductOfDelete> product = session.createQuery("FROM ProductOfDelete").getResultList();
         session.close();
         return product;
-//        String select = "SELECT id, category, name, price, discount, ROUND (actualPrice, 2) AS actualPrice, ROUND (totalVolume, 3) AS totalVolume, data FROM productofdelete";
-//        return findProductFromBD(select);
     }
 
     //отправка запроса на получение всех ранее удаленных продуктов из основной БД
@@ -38,8 +36,6 @@ public class GetProductService{
         List<BuyProduct> product = session.createQuery("FROM BuyProduct").getResultList();
         session.close();
         return product;
-//        String select = "SELECT id, name, ROUND (actualPrice, 2) AS actualPrice, quantity, ROUND (totalPrice, 2) AS totalPrice FROM buyproduct";
-//        return findBuyProductFromBD(select);
     }
 
     //находим конкретный Product по ID

@@ -1,7 +1,9 @@
 package kasyan.util;
 
+import kasyan.bean.BuyProduct;
 import kasyan.bean.Person;
 import kasyan.bean.Product;
+import kasyan.bean.ProductOfDelete;
 import org.hibernate.SessionFactory;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.cfg.Configuration;
@@ -32,6 +34,8 @@ public class HibernateSessionFactory {
                 configuration.setProperties(settings);
                 configuration.addAnnotatedClass(Person.class);
                 configuration.addAnnotatedClass(Product.class);
+                configuration.addAnnotatedClass(BuyProduct.class);
+                configuration.addAnnotatedClass(ProductOfDelete.class);
                 ServiceRegistry serviceRegistry = new
                         StandardServiceRegistryBuilder()
                         .applySettings(configuration.getProperties()).build();
