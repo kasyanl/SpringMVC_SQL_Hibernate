@@ -28,6 +28,7 @@ public class HibernateSessionFactory {
 
                 Properties settings = loadProperties();
                 Connection conn = getConnection();
+                assert settings != null;
                 settings.put(Environment.DRIVER, "com.mysql.cj.jdbc.Driver");
                 settings.put(Environment.DIALECT, "org.hibernate.dialect.MySQL5Dialect");
                 settings.put(Environment.CURRENT_SESSION_CONTEXT_CLASS, "thread");
@@ -63,6 +64,7 @@ public class HibernateSessionFactory {
         Properties properties = loadProperties();
         Connection conn = null;
         try (InputStream in = new FileInputStream("src/main/resources/application.properties")) {
+            assert properties != null;
             properties.load(in);
             Class.forName(properties.getProperty("DRIVER"));
             conn = DriverManager.getConnection(properties.getProperty("URL"),

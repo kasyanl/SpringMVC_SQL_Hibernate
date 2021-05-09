@@ -4,11 +4,8 @@ import kasyan.bean.BuyProduct;
 import kasyan.bean.Product;
 import kasyan.exceptions.ProductNotFoundException;
 import kasyan.util.HibernateSessionFactory;
-
 import org.hibernate.Session;
-import org.hibernate.query.Query;
 import org.springframework.beans.factory.annotation.Autowired;
-
 import org.springframework.stereotype.Service;
 
 import java.util.List;

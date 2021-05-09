@@ -33,12 +33,12 @@
         <c:forEach var="product" items="${product}">
             <tr>
                 <td><c:out value="${product.id}"/></td>
-                <td><c:out value="${product.getCategory()}"/></td>
-                <td><c:out value="${product.getName()}"/></td>
-                <td><c:out value="${product.getPrice()}"/></td>
-                <td><c:out value="${product.getDiscount()}"/></td>
-                <td><c:out value="${product.getActualPrice()}"/></td>
-                <td><c:out value="${product.getTotalVolume()}"/></td>
+                <td><c:out value="${product.category}"/></td>
+                <td><c:out value="${product.name}"/></td>
+                <td><c:out value="${product.price}"/></td>
+                <td><c:out value="${product.discount}"/></td>
+                <td><c:out value="${product.actualPrice}"/></td>
+                <td><c:out value="${product.totalVolume}"/></td>
             </tr>
         </c:forEach>
         <tr>

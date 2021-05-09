@@ -10,8 +10,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
-import java.sql.SQLException;
-
 // Контроллер для работы с залогининым пользователем
 
 @Controller
@@ -35,7 +33,7 @@ public class ProductCrudOperationController {
 
     // полечение всего списка продуктов из лсновной бд для Гостя
     @GetMapping(value = "/allproductguest")
-    public ModelAndView findAllForGuest() throws SQLException {
+    public ModelAndView findAllForGuest() {
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName("guestpages/allproductguest");
         modelAndView.addObject("product", getProductService.findAll());
@@ -54,14 +52,14 @@ public class ProductCrudOperationController {
                             @RequestParam(value = "name") String name,
                             @RequestParam(value = "price") double price,
                             @RequestParam(value = "discount") double discount,
-                            @RequestParam(value = "totalVolume") double totalVolume) throws SQLException {
+                            @RequestParam(value = "totalVolume") double totalVolume) {
         saveProductService.saveProduct(category, name, price, discount, totalVolume);
         return new ModelAndView("redirect:/product/allproduct");
     }
 
     // получение всего списка продуктов из корзины
     @GetMapping(value = "/bascket")
-    public ModelAndView bascket() throws SQLException {
+    public ModelAndView bascket() {
         if (!getProductService.basketIsEmpty()) {
             return new ModelAndView("redirect:/product/alldeletedproduct");
         }
@@ -75,7 +73,7 @@ public class ProductCrudOperationController {
     }
 
     @GetMapping(value = "/alldeletedproduct")
-    public ModelAndView findAllDeletedProduct() throws SQLException {
+    public ModelAndView findAllDeletedProduct() {
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName("adminpages/alldeleteproducts");
         modelAndView.addObject("product", getProductService.findAllDeleted());
@@ -84,42 +82,42 @@ public class ProductCrudOperationController {
 
     // получение страницы с сообщением, что продукт удален из основной БД
     @GetMapping(value = "/deleteproduct")
-    public ModelAndView deleteproduct(@RequestParam(value = "id") int id) throws SQLException, ProductNotFoundException {
+    public ModelAndView deleteproduct(@RequestParam(value = "id") int id) throws ProductNotFoundException {
         deleteProductService.deleteProduct(id);
         return new ModelAndView("adminpages/deleteproduct");
     }
 
     // получение страницы с сообщением, что продукт удален из корзины
     @GetMapping(value = "/deleteproductbasket")
-    public ModelAndView deleteproductbasket(@RequestParam(value = "id") int id) throws SQLException {
+    public ModelAndView deleteproductbasket(@RequestParam(value = "id") int id) {
         deleteProductService.deleteOfBasket(id);
         return new ModelAndView("adminpages/deleteproductbasket");
     }
 
     // очистка корзины
     @GetMapping(value = "/cleanbascket")
-    public String cleanBascket() throws SQLException {
+    public String cleanBascket() {
         deleteProductService.cleanBasket();
         return "adminpages/cleanbascket";
     }
 
     // восстановление всех данных из корзины
     @GetMapping(value = "/recoveredallproduct")
-    public String recoveredAllProduct() throws SQLException {
+    public String recoveredAllProduct() {
         recoveryProductService.recoveryAllProduct();
         return "adminpages/recoveredallproduct";
     }
 
     // получение страницы с сообщением, что продукт восстановлен
     @GetMapping(value = "/recoveredproduct")
-    public ModelAndView recoveredProduct(@RequestParam(value = "id") int id) throws SQLException {
+    public ModelAndView recoveredProduct(@RequestParam(value = "id") int id) {
         recoveryProductService.recovered(id);
         return new ModelAndView("adminpages/recoveredproduct");
     }
 
     // получение страницы с формой для редактирования данных продукта
     @GetMapping(value = "/editproduct")
-    public ModelAndView edit(@RequestParam(value = "id") int id) throws ProductNotFoundException, SQLException {
+    public ModelAndView edit(@RequestParam(value = "id") int id) throws ProductNotFoundException {
         ModelAndView modelAndView = new ModelAndView("adminpages/editproduct");
         modelAndView.addObject("product", getProductService.findById(id));
         return modelAndView;
@@ -132,7 +130,7 @@ public class ProductCrudOperationController {
                              @RequestParam(value = "name") String name,
                              @RequestParam(value = "price") double price,
                              @RequestParam(value = "discount") double discount,
-                             @RequestParam(value = "totalVolume") double totalVolume) throws SQLException {
+                             @RequestParam(value = "totalVolume") double totalVolume) {
         updateProductService.update(id, category, name, price, discount, totalVolume);
         return new ModelAndView("redirect:/product/allproduct");
     }

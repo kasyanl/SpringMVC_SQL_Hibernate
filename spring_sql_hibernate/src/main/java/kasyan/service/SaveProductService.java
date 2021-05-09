@@ -9,17 +9,17 @@ import org.hibernate.Session;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.Date;
 import java.util.List;
 
 @Service
-public class SaveProductService{
+public class SaveProductService {
 
     private GetProductService getProductService;
+    private SortProductService sortProductService;
 
     /* отправка запроса на добавление новой записи в БД Product
    и автоматическим расчетом цены с учетом скидки */
-    public void saveProduct(String category, String name, double price, double discount, double totalVolume){
+    public void saveProduct(String category, String name, double price, double discount, double totalVolume) {
         List<Product> newList = getProductService.findAll();
         int id = createId(newList);
         double actualPrice = calculating(price, discount);
@@ -88,12 +88,11 @@ public class SaveProductService{
         return (price - (price * discount / 100));
     }
 
-
     // формирование ID с одновременной проверкой (если есть пропуск (например 2, 3, ,5 то будет присвоен id=4))
     public int createId(List<Product> newList) {
         int id = 0; // по умолчанию id = 0
         if (!newList.isEmpty()) { // если записи имеются, проверяем на пропущенные id
-            SortDataBase.sortById(newList); //сортируем для корректной проверки
+            sortProductService.sortById(); //сортируем для корректной проверки
             int i = 0;
             for (Product product : newList) { // проверяем
                 if (product.getId() == i) i++; // теперь i больше текущего id на 1
@@ -106,5 +105,9 @@ public class SaveProductService{
     @Autowired
     public void setGetProductService(GetProductService getProductService) {
         this.getProductService = getProductService;
+    }
+    @Autowired
+    public void setGetProductService(SortProductService sortProductService) {
+        this.sortProductService = sortProductService;
     }
 }

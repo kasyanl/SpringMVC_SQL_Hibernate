@@ -12,7 +12,7 @@ import org.springframework.stereotype.Service;
 
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.sql.SQLException;
+
 import java.util.List;
 
 @Service
@@ -27,7 +27,7 @@ public class ExportToExcelService {
     }
 
     // сервис на экспорт списка продуктов одной категории в excel
-    public List<Product> exportCategoryList(String category){
+    public List<Product> exportCategoryList(String category) {
         return exportList(getProductService.fineCategoryForRead(category));
     }
 
@@ -36,12 +36,12 @@ public class ExportToExcelService {
         HSSFWorkbook workbook = new HSSFWorkbook();
         Sheet sheet = workbook.createSheet("List products"); //название вкладки
         sheet.setColumnWidth(0, 1500); // ширина строк
-        sheet.setColumnWidth(1,6000);
-        sheet.setColumnWidth(2,6000);
-        sheet.setColumnWidth(3,3000);
-        sheet.setColumnWidth(4,3000);
-        sheet.setColumnWidth(5,3000);
-        sheet.setColumnWidth(6,3000);
+        sheet.setColumnWidth(1, 6000);
+        sheet.setColumnWidth(2, 6000);
+        sheet.setColumnWidth(3, 3000);
+        sheet.setColumnWidth(4, 3000);
+        sheet.setColumnWidth(5, 3000);
+        sheet.setColumnWidth(6, 3000);
         // даем название колонок таблицы
         Row row = sheet.createRow(0); // первая строка
 
@@ -103,17 +103,18 @@ public class ExportToExcelService {
         }
         return listProduct;
     }
+
     // формирование таблицы excel и добавление данных из List
     public static List<ProductOfDelete> exportListOfBasket(List<ProductOfDelete> listProductDelete) {
         HSSFWorkbook workbook = new HSSFWorkbook();
         Sheet sheet = workbook.createSheet("List products"); //название вкладки
         sheet.setColumnWidth(0, 1500); // ширина строк
-        sheet.setColumnWidth(1,6000);
-        sheet.setColumnWidth(2,6000);
-        sheet.setColumnWidth(3,3000);
-        sheet.setColumnWidth(4,3000);
-        sheet.setColumnWidth(5,3000);
-        sheet.setColumnWidth(6,3000);
+        sheet.setColumnWidth(1, 6000);
+        sheet.setColumnWidth(2, 6000);
+        sheet.setColumnWidth(3, 3000);
+        sheet.setColumnWidth(4, 3000);
+        sheet.setColumnWidth(5, 3000);
+        sheet.setColumnWidth(6, 3000);
         // даем название колонок таблицы
         Row row = sheet.createRow(0); // первая строка
 
@@ -177,14 +178,14 @@ public class ExportToExcelService {
     }
 
     // формирование таблицы excel из списка покупок
-    public void check(List<BuyProduct> listProduct){
+    public void check(List<BuyProduct> listProduct) {
         HSSFWorkbook workbook = new HSSFWorkbook();
         Sheet sheet = workbook.createSheet("check"); //название вкладки
         sheet.setColumnWidth(0, 2000); // ширина строк
-        sheet.setColumnWidth(1,5000);
-        sheet.setColumnWidth(2,3000);
-        sheet.setColumnWidth(3,4000);
-        sheet.setColumnWidth(4,4000);
+        sheet.setColumnWidth(1, 5000);
+        sheet.setColumnWidth(2, 3000);
+        sheet.setColumnWidth(3, 4000);
+        sheet.setColumnWidth(4, 4000);
 
         // даем название колонок таблицы
         Row row = sheet.createRow(0); // первая строка

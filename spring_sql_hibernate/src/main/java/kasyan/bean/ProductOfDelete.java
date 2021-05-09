@@ -19,9 +19,13 @@ public class ProductOfDelete {
     private int id;
     private String category;
     private String name;
+    @Column(nullable = false, updatable = false, scale = 2, precision = 10)
     private double price;
+    @Column(nullable = false, updatable = false, scale = 2, precision = 10)
     private double discount;
+    @Column(nullable = false, updatable = false, scale = 2, precision = 10)
     private double actualPrice;
+    @Column(nullable = false, updatable = false, scale = 2, precision = 10)
     private double totalVolume;
     @Temporal(TemporalType.TIMESTAMP)
     @UpdateTimestamp

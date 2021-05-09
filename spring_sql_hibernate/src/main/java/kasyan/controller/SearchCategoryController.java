@@ -7,8 +7,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
-import java.sql.SQLException;
-
 @Controller
 @RequestMapping(value = "/product")
 public class SearchCategoryController {
@@ -17,7 +15,7 @@ public class SearchCategoryController {
 
     // получение списка категории FRUITS
     @GetMapping(value = "/finefruits")
-    public ModelAndView fineFruits() throws SQLException {
+    public ModelAndView fineFruits() {
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName("adminpages/finecategory/finefruits");
         modelAndView.addObject("product", getProductService.fineCategoryForRead("FRUITS"));
@@ -26,7 +24,7 @@ public class SearchCategoryController {
 
     // получение списка категории BERRIES
     @GetMapping(value = "/fineberries")
-    public ModelAndView fineBerries() throws SQLException {
+    public ModelAndView fineBerries() {
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName("adminpages/finecategory/fineberries");
         modelAndView.addObject("product", getProductService.fineCategoryForRead("BERRIES"));
@@ -35,7 +33,7 @@ public class SearchCategoryController {
 
     // получение списка категории VEGETABLES
     @GetMapping(value = "/finevegetables")
-    public ModelAndView fineVegetables() throws SQLException {
+    public ModelAndView fineVegetables() {
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName("adminpages/finecategory/finevegetables");
         modelAndView.addObject("product", getProductService.fineCategoryForRead("VEGETABLES"));
@@ -44,7 +42,7 @@ public class SearchCategoryController {
 
     // получение списка категории MILK_PRODUCT
     @GetMapping(value = "/finemilkproduct")
-    public ModelAndView fineMilkProduct() throws SQLException {
+    public ModelAndView fineMilkProduct() {
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName("adminpages/finecategory/finemilkproduct");
         modelAndView.addObject("product", getProductService.fineCategoryForRead("MILK_PRODUCT"));
@@ -53,7 +51,7 @@ public class SearchCategoryController {
 
     // получение списка категории ALCOHOLIC_BEVERAGES
     @GetMapping(value = "/finealcohol")
-    public ModelAndView fineAlcohol() throws SQLException {
+    public ModelAndView fineAlcohol() {
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName("adminpages/finecategory/finealcohol");
         modelAndView.addObject("product", getProductService.fineCategoryForRead("ALCOHOLIC_BEVERAGES"));
@@ -62,7 +60,7 @@ public class SearchCategoryController {
 
     // получение списка категории MEAT
     @GetMapping(value = "/finemeat")
-    public ModelAndView fineMeat() throws SQLException {
+    public ModelAndView fineMeat() {
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName("adminpages/finecategory/finemeat");
         modelAndView.addObject("product", getProductService.fineCategoryForRead("MEAT"));
@@ -83,13 +81,13 @@ public class SearchCategoryController {
     public ModelAndView fineBerriesGuest(){
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName("guestpages/finecategory/fineberriesguest");
-        modelAndView.addObject("productBERRIES", getProductService.fineCategoryForRead("BERRIES"));
+        modelAndView.addObject("product", getProductService.fineCategoryForRead("BERRIES"));
         return modelAndView;
     }
 
     // получение списка категории VEGETABLES для Гостя
     @GetMapping(value = "/finevegetablesguest")
-    public ModelAndView fineVegetablesGuest() throws SQLException {
+    public ModelAndView fineVegetablesGuest() {
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName("guestpages/finecategory/finevegetablesguest");
         modelAndView.addObject("product", getProductService.fineCategoryForRead("VEGETABLES"));
@@ -98,7 +96,7 @@ public class SearchCategoryController {
 
     // получение списка категории MILK_PRODUCT для Гостя
     @GetMapping(value = "/finemilkproductguest")
-    public ModelAndView fineMilkProductGuest() throws SQLException {
+    public ModelAndView fineMilkProductGuest() {
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName("guestpages/finecategory/finemilkproductguest");
         modelAndView.addObject("product", getProductService.fineCategoryForRead("MILK_PRODUCT"));
@@ -107,7 +105,7 @@ public class SearchCategoryController {
 
     // получение списка категории ALCOHOLIC_BEVERAGES для Гостя
     @GetMapping(value = "/finealcoholguest")
-    public ModelAndView fineAlcoholGuest() throws SQLException {
+    public ModelAndView fineAlcoholGuest() {
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName("guestpages/finecategory/finealcoholguest");
         modelAndView.addObject("product", getProductService.fineCategoryForRead("ALCOHOLIC_BEVERAGES"));
@@ -116,7 +114,7 @@ public class SearchCategoryController {
 
     // получение списка категории MEAT для Гостя
     @GetMapping(value = "/finemeatguest")
-    public ModelAndView fineMeatGuest() throws SQLException {
+    public ModelAndView fineMeatGuest() {
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName("guestpages/finecategory/finemeatguest");
         modelAndView.addObject("product", getProductService.fineCategoryForRead("MEAT"));

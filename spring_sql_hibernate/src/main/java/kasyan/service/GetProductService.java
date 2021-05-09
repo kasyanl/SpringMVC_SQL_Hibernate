@@ -8,11 +8,10 @@ import kasyan.util.HibernateSessionFactory;
 import org.hibernate.Session;
 import org.springframework.stereotype.Service;
 
-import javax.persistence.Query;
 import java.util.List;
 
 @Service
-public class GetProductService{
+public class GetProductService {
 
     //отправка запроса на получение всех продуктов из основной БД
     public List<Product> findAll() {
@@ -23,7 +22,7 @@ public class GetProductService{
     }
 
     //отправка запроса на получение всех ранее удаленных продуктов из основной БД
-    public List<ProductOfDelete> findAllDeleted(){
+    public List<ProductOfDelete> findAllDeleted() {
         Session session = HibernateSessionFactory.getSessionFactory().openSession();
         List<ProductOfDelete> product = session.createQuery("FROM ProductOfDelete").getResultList();
         session.close();
@@ -39,7 +38,7 @@ public class GetProductService{
     }
 
     //находим конкретный Product по ID
-    public Product findById(int id) throws ProductNotFoundException{
+    public Product findById(int id) throws ProductNotFoundException {
         List<Product> newList = findAll();
         for (Product product : newList) {
             if (product.getId() == id) {
@@ -50,19 +49,18 @@ public class GetProductService{
     }
 
     // ищем все Products одной категории и отправляем в БД соответствующий запрос
-    public List<Product> fineCategoryForRead(String category){
+    public List<Product> fineCategoryForRead(String category) {
 
         Session session = HibernateSessionFactory.getSessionFactory().openSession();
-        List<Product> product =  session.createQuery("FROM Product WHERE category= :category")
+        List<Product> product = session.createQuery("FROM Product WHERE category= :category")
                 .setParameter("category", category)
                 .getResultList();
-
         session.close();
         return product;
     }
 
     // расчет общей суммы покупок
-    public double totalPrise(){
+    public double totalPrise() {
         List<BuyProduct> newList = findAllBuyProduct();
         double count = 0;
         for (BuyProduct product : newList) {
@@ -77,7 +75,7 @@ public class GetProductService{
     }
 
     // проверка, пуста ли корзина
-    public boolean basketIsEmpty(){
+    public boolean basketIsEmpty() {
         List<ProductOfDelete> newList = findAllDeleted();
         return newList.isEmpty();
     }

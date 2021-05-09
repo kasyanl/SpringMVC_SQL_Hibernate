@@ -51,8 +51,8 @@
         </tr>
         <c:forEach var="product" items="${product}">
             <tr>
-                <td><c:out value="${product.getId}"/>></td>
-                <td><c:out value="${product.getCategory()}"/></td>
+                <td><c:out value="${product.id}"/>></td>
+                <td><c:out value="${product.category}"/></td>
                 <td><c:out value="${product.getName()}"/></td>
                 <td><c:out value="${product.getPrice()}"/></td>
                 <td><c:out value="${product.getDiscount()}"/></td>

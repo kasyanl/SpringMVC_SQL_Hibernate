@@ -24,7 +24,7 @@ public class BuyController {
 
     // получение страницы с формой для добавления продукта
     @GetMapping(value = "/buystarted")
-    public ModelAndView buyStarted() throws SQLException {
+    public ModelAndView buyStarted(){
         deleteProductService.cleanBuyDB();
         return new ModelAndView("adminpages/buystarted");
 
@@ -32,7 +32,7 @@ public class BuyController {
 
     // получение страницы с формой для добавления продукта
     @GetMapping(value = "/buyproduct")
-    public ModelAndView buyProductGet() throws SQLException {
+    public ModelAndView buyProductGet(){
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName("adminpages/buyproduct");
         modelAndView.addObject("product", getProductService.findAll());
@@ -53,7 +53,7 @@ public class BuyController {
 
     // получение страницы с формой для добавления продукта
     @GetMapping(value = "/endbuyproduct")
-    public ModelAndView endBuyProductGet() throws SQLException {
+    public ModelAndView endBuyProductGet(){
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName("adminpages/endbuyproduct");
         modelAndView.addObject("product", getProductService.findAllBuyProduct());
@@ -73,14 +73,14 @@ public class BuyController {
 
     // получение страницы с сообщением, что продукт удален из основной БД
     @GetMapping(value = "/deleteproductbuy")
-    public ModelAndView deleteproduct(@RequestParam(value = "id") int id) throws SQLException {
+    public ModelAndView deleteproduct(@RequestParam(value = "id") int id){
         deleteProductService.deleteBuy(id);
         return new ModelAndView("redirect:/product/endbuyproduct");
     }
 
     // получение страницы с сообщением, что продукт удален из основной БД
     @GetMapping(value = "/failbuyproduct")
-    public ModelAndView failbuyproduct() throws SQLException {
+    public ModelAndView failbuyproduct() {
         deleteProductService.cleanBuyDB();
         return new ModelAndView("adminpages/failbuyproduct");
     }

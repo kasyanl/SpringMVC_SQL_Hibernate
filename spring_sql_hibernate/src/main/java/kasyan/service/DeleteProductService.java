@@ -20,7 +20,6 @@ public class DeleteProductService {
     public void deleteProduct(int id) throws ProductNotFoundException {
 
         Session session = HibernateSessionFactory.getSessionFactory().openSession();
-
         saveProductService.saveProductOfDelete(id);
         session.beginTransaction();
         session.createQuery("DELETE Product WHERE id= :id").setParameter("id", id).executeUpdate();

@@ -9,8 +9,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
-import java.sql.SQLException;
-
 @Controller
 @RequestMapping(value = "/product")
 public class EditDiscountForCategoryController {
@@ -25,7 +23,7 @@ public class EditDiscountForCategoryController {
 
     // отправка заданной скидки для категории ALCOHOLIC_BEVERAGES
     @PostMapping(value = "/alcoholdiscount")
-    public ModelAndView editAlcoholDiscount(@RequestParam(value = "discount") double discount) throws SQLException {
+    public ModelAndView editAlcoholDiscount(@RequestParam(value = "discount") double discount) {
         updateProductService.updateDiscountForCategory("ALCOHOLIC_BEVERAGES", discount);
         return new ModelAndView("redirect:/product/finealcohol");
     }
@@ -38,7 +36,7 @@ public class EditDiscountForCategoryController {
 
     // отправка заданной скидки для категории FRUITS
     @PostMapping(value = "/fruitsdiscount")
-    public ModelAndView editFruitsDiscount(@RequestParam(value = "discount") double discount) throws SQLException {
+    public ModelAndView editFruitsDiscount(@RequestParam(value = "discount") double discount) {
         updateProductService.updateDiscountForCategory("FRUITS", discount);
         return new ModelAndView("redirect:/product/finefruits");
     }
@@ -51,7 +49,7 @@ public class EditDiscountForCategoryController {
 
     // отправка заданной скидки для категории BERRIES
     @PostMapping(value = "/berriesdiscount")
-    public ModelAndView editBerriesDiscount(@RequestParam(value = "discount") double discount) throws SQLException {
+    public ModelAndView editBerriesDiscount(@RequestParam(value = "discount") double discount) {
         updateProductService.updateDiscountForCategory("BERRIES", discount);
         return new ModelAndView("redirect:/product/fineberries");
     }
@@ -64,7 +62,7 @@ public class EditDiscountForCategoryController {
 
     // отправка заданной скидки для категории VEGETABLES
     @PostMapping(value = "/vegetablesdiscount")
-    public ModelAndView editVegetablesDiscount(@RequestParam(value = "discount") double discount) throws SQLException {
+    public ModelAndView editVegetablesDiscount(@RequestParam(value = "discount") double discount) {
         updateProductService.updateDiscountForCategory("VEGETABLES", discount);
         return new ModelAndView("redirect:/product/finevegetables");
     }
@@ -77,7 +75,7 @@ public class EditDiscountForCategoryController {
 
     // отправка заданной скидки для категории MILK_PRODUCT
     @PostMapping(value = "/milkproductdiscount")
-    public ModelAndView editMilkProductDiscount(@RequestParam(value = "discount") double discount) throws SQLException {
+    public ModelAndView editMilkProductDiscount(@RequestParam(value = "discount") double discount) {
         updateProductService.updateDiscountForCategory("MILK_PRODUCT", discount);
         return new ModelAndView("redirect:/product/finemilkproduct");
     }
@@ -90,7 +88,7 @@ public class EditDiscountForCategoryController {
 
     // отправка заданной скидки для категории MEAT
     @PostMapping(value = "/meatdiscount")
-    public ModelAndView editMeatDiscount(@RequestParam(value = "discount") double discount) throws SQLException {
+    public ModelAndView editMeatDiscount(@RequestParam(value = "discount") double discount) {
         updateProductService.updateDiscountForCategory("MEAT", discount);
         return new ModelAndView("redirect:/product/finemeat");
     }
