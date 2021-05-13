@@ -19,6 +19,8 @@
         <javax.servlet>4.0.1</javax.servlet>
         <mysql.version>8.0.19</mysql.version>
         <hb.manager>5.4.29.Final</hb.manager>
+        <hb.jpa>1.0.1.Final</hb.jpa>
+        <hb.core>5.4.29.Final</hb.core>
         <junit.version>4.13.1</junit.version>
         <jetty.MP>9.4.38.v20210224</jetty.MP>
         <apache.poi>5.0.0</apache.poi>
@@ -49,7 +51,7 @@
         <dependency>
             <groupId>org.hibernate.javax.persistence</groupId>
             <artifactId>hibernate-jpa-2.0-api</artifactId>
-            <version>1.0.1.Final</version>
+            <version>${hb.jpa}</version>
         </dependency>
 
 
@@ -112,14 +114,9 @@
             <version>1.4</version>
         </dependency>
         <dependency>
-            <groupId>org.jsoup</groupId>
-            <artifactId>jsoup</artifactId>
-            <version>1.10.2</version>
-        </dependency>
-        <dependency>
             <groupId>org.hibernate</groupId>
             <artifactId>hibernate-core</artifactId>
-            <version>5.4.29.Final</version>
+            <version>${hb.core}</version>
         </dependency>
     </dependencies>
     <build>
