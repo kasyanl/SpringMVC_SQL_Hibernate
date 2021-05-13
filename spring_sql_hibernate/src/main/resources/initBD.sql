@@ -7,9 +7,7 @@ CREATE TABLE product
     discount    DOUBLE DEFAULT 0 NOT NULL,
     totalVolume DOUBLE DEFAULT 0 NOT NULL,
     actualPrice DOUBLE DEFAULT 0 NOT NULL,
-    data        DATETIME         NOT NULL,
-    quantity    DOUBLE DEFAULT 0 NOT NULL,
-    totalPrice  DOUBLE DEFAULT 0 NOT NULL
+    data        DATETIME         NOT NULL
 );
 
 CREATE TABLE person

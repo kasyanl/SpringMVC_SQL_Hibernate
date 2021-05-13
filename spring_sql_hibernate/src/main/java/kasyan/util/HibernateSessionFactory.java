@@ -11,11 +11,7 @@ import org.hibernate.cfg.Environment;
 import org.hibernate.service.ServiceRegistry;
 
 import java.io.FileInputStream;
-import java.io.IOException;
 import java.io.InputStream;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
 import java.util.Properties;
 
 public class HibernateSessionFactory {
@@ -27,7 +23,6 @@ public class HibernateSessionFactory {
                 Configuration configuration = new Configuration();
 
                 Properties settings = loadProperties();
-                Connection conn = getConnection();
                 assert settings != null;
                 settings.put(Environment.DRIVER, "com.mysql.cj.jdbc.Driver");
                 settings.put(Environment.DIALECT, "org.hibernate.dialect.MySQL5Dialect");
@@ -37,12 +32,10 @@ public class HibernateSessionFactory {
                 configuration.addAnnotatedClass(Product.class);
                 configuration.addAnnotatedClass(BuyProduct.class);
                 configuration.addAnnotatedClass(ProductOfDelete.class);
-                ServiceRegistry serviceRegistry = new
-                        StandardServiceRegistryBuilder()
+                ServiceRegistry serviceRegistry = new StandardServiceRegistryBuilder()
                         .applySettings(configuration.getProperties()).build();
                 sessionFactory = configuration.buildSessionFactory(serviceRegistry);
 
-                conn.close();
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -58,20 +51,5 @@ public class HibernateSessionFactory {
             return null;
         }
         return properties;
-    }
-
-    private static Connection getConnection() {
-        Properties properties = loadProperties();
-        Connection conn = null;
-        try (InputStream in = new FileInputStream("src/main/resources/application.properties")) {
-            assert properties != null;
-            properties.load(in);
-            Class.forName(properties.getProperty("DRIVER"));
-            conn = DriverManager.getConnection(properties.getProperty("URL"),
-                    properties.getProperty("LOGIN"), properties.getProperty("PASSWORD"));
-        } catch (IOException | ClassNotFoundException | SQLException e) {
-            e.printStackTrace();
-        }
-        return conn;
     }
 }
